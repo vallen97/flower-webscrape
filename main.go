@@ -1,5 +1,5 @@
 // Turorial: https://www.zenrows.com/blog/web-scraping-golang#set-up-go-project
-// TODO: modify project to scrape https://www.atozflowers.com/flower/
+// Scraping from https://www.atozflowers.com/flower/
 
 package main 
  
@@ -38,27 +38,7 @@ func contains(s []string, str string) bool {
 } 
  
 func main() { 
-	//scrapeFlowerImage("Achillea", "https://www.atozflowers.com/flower/achillea/")
-	
 	scrapeAllFlowers()
-
-	// var flowers = scrapeAllFlowers()
-
-	//TODO: loop through the flower links and get the name and images
-	// NOTE: do we want one csv or all of the flowers image urls in one csv
-	// for _, flower := range flowers { 
-		// // converting a PokemonProduct to an array of strings 
-		// record := []string{ 
-		// 	// visit the url 
-		// 	flower.url, 
-		// 	flower.name, 
-		// } 
-
-		// scrapeFlowerImage(flower.name, flower.url)
-
-		//NOTE: for testing, we want the first flower	
-		// break
-	// } 
 }
 
 func scrapeAllFlowers(){
@@ -126,17 +106,10 @@ func scrapeAllFlowers(){
 			// visiting a new page 
 			c.Visit(pageToScrape) 
 		} 
-		// we can assume that if the pagesToScrape length is more than the limit it is done 
-		// we can return the data
-		
-		
 	}) 
  
 	// visiting the first page 
 	c.Visit(pageToScrape) 
-
-	//saveToCSV(flowers)
-
 }
 
 func scrapeFlowerImage(flowerName string, url string){
@@ -151,12 +124,8 @@ func scrapeFlowerImage(flowerName string, url string){
 
 	// scraping the product data 
 	c.OnHTML("li.col-3", func(e *colly.HTMLElement) { 
-		// flowerList := FlowerList{}
 		flowerPage := FlowerPage{}
 
-		// flowerList.url =  e.ChildAttr("a", "href")
-		// flowerList.name = e.ChildText("h4")
-		// flowers = append(flowers, flowerList)
 		flowerPage.name = flowerName
 		flowerPage.imageURL =  e.ChildAttr("a", "href")
 
@@ -199,36 +168,3 @@ func scrapeFlowerImage(flowerName string, url string){
 	} 
 	defer writer.Flush() 
 }
-
-// func saveToCSV(flowers){
-// 	// opening the CSV file 
-// 	file, err := os.Create("flowerURLs.csv") 
-// 	if err != nil { 
-// 		log.Fatalln("Failed to create output CSV file", err) 
-// 	} 
-// 	defer file.Close() 
-
-// 	// initializing a file writer 
-// 	writer := csv.NewWriter(file) 
-
-// 	// defining the CSV headers 
-// 	headers := []string{ 
-// 		"url", 
-// 		"name", 
-// 	} 
-// 	// writing the column headers 
-// 	writer.Write(headers) 
-
-// 	// adding each Pokemon product to the CSV output file 
-// 	for _, flower := range flowers { 
-// 		// converting a PokemonProduct to an array of strings 
-// 		record := []string{ 
-// 			flower.url, 
-// 			flower.name, 
-// 		} 
-
-// 		// writing a new CSV record 
-// 		writer.Write(record) 
-// 	} 
-// 	defer writer.Flush() 
-// }
